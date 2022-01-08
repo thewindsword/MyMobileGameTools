@@ -48,7 +48,7 @@ if (config.runsInWidget) {
 
 Script.complete()
 async function createWidget() {
-  let dayEnd = new Date(new Date().setHours(0, 0, 0, 0) + 24*60*60*1000)
+  let dayEnd = new Date(new Date().setHours(4, 0, 0, 0) + 24*60*60*1000)
   let weekEnd = getWeekEnd()
   let resinIcon = await loadResinIcon()
   let coinIcon = await loadCoinIcon()
@@ -264,7 +264,7 @@ function randomIntFromInterval(min, max) {
 
 function getWeekEnd() {
         const now = new Date()
-        const todayStart = new Date(new Date().setHours(0, 0, 0, 0))
+        const todayStart = new Date(new Date().setHours(4, 0, 0, 0))
         const weekEndTime = todayStart.getTime() + (7 - now.getDay()) * 86400000;
         return weekEndTime
 }
