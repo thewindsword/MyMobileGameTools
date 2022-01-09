@@ -159,6 +159,7 @@ async function createWidget() {
   taskStack.centerAlignContent()
 
   let expeditionsTitleStack = widget.addStack()
+  let isHasFinished = false
   let minCoverTime = 0
   let expeditionsTitleElement = expeditionsTitleStack.addText(`每日派遣：${resin.current_expedition_num} / ${resin.max_expedition_num}`)
   expeditionsTitleElement.textColor = Color.white()
@@ -185,19 +186,37 @@ async function createWidget() {
                 let avatarImgElement = expeditionStack.addImage(icon)
                 avatarImgElement.imageSize = new Size(ThemeConfig.avatarSize, ThemeConfig.avatarSize)
                 avatarImgElement.cornerRadius = 0
-                let remainedTimeElemnet = expeditionStack.addText(`${await getClock(remained_time)}`)  
-                remainedTimeElemnet.centerAlignText()
-                remainedTimeElemnet.textColor = Color.white()
-                remainedTimeElemnet.textOpacity = 0.6
-                remainedTimeElemnet.font = Font.mediumSystemFont(ThemeConfig.tipSize)
+                if (expeditions[i].status !== 'Finished') {
+                        let remainedTimeElemnet = expeditionStack.addText(`${await getClock(remained_time)}`)  
+                        remainedTimeElemnet.centerAlignText()
+                        remainedTimeElemnet.textColor = Color.white()
+                        remainedTimeElemnet.textOpacity = 0.6
+                        remainedTimeElemnet.font = Font.mediumSystemFont(ThemeConfig.tipSize)
+                } else {
+                        isHasFinished = true
+                        let remainedTimeElemnet = expeditionStack.addText('探索完成')  
+                        remainedTimeElemnet.centerAlignText()
+                        remainedTimeElemnet.textColor = Color.green()
+                        remainedTimeElemnet.textOpacity = 0.8
+                        remainedTimeElemnet.font = Font.mediumSystemFont(ThemeConfig.tipSize)
+                }
                 expeditionStack.centerAlignContent()
         }
   }
   expeditionsTitleStack.addSpacer(16)
-  let expeditionsRecoverElement = expeditionsTitleStack.addText(`最早完成时间：${await getClock(minCoverTime)}`)
-  expeditionsRecoverElement.textColor = Color.white()
-  expeditionsRecoverElement.textOpacity = 0.8
-  expeditionsRecoverElement.font = Font.mediumSystemFont(ThemeConfig.textSize)
+  if (isHasFinished) {
+        let expeditionsRecoverElement = expeditionsTitleStack.addText(`已有派遣完成`)
+        expeditionsRecoverElement.textColor = Color.green()
+        expeditionsRecoverElement.textOpacity = 0.8
+        expeditionsRecoverElement.font = Font.mediumSystemFont(ThemeConfig.textSize)
+        
+  } else {
+        let expeditionsRecoverElement = expeditionsTitleStack.addText(`最早完成时间：${await getClock(minCoverTime)}`)
+        expeditionsRecoverElement.textColor = Color.white()
+        expeditionsRecoverElement.textOpacity = 0.8
+        expeditionsRecoverElement.font = Font.mediumSystemFont(ThemeConfig.textSize)
+        
+  }
   return widget
 }
 
